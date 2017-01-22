@@ -1,0 +1,98 @@
+AIRNovel用のtransition強化プラグインです。
+
+自己責任で良識の範囲内で自由に使ってください。
+元のソースの同封していますのでそこから変更するのもご自由に。
+
+DLや使用した場合の報告、クレジットの記載は不要です。
+あればうれしいので、しようかどうか迷ったらしてください。
+===============================================
+
+使い方
+plgTransPlus.swf、plgTweensy.swfをプロジェクトフォルダ内に準備してください。
+[loadplugin fn=plgTransPlus]
+[loadplugin fn=plgTweensy]
+でプラグインを読み込みます。
+
+※transition
+[trans_plus type=String layer=String time=uint plugin=String c_plugin=String c_flayer=String skip=Boolean 〜]
+
+*共通
+	type:画面遷移の仕方。必須。
+	layer:transさせるレイヤ。必須。影響のある全レイヤを指定の事。
+	time:変化に掛ける時間。ミリ秒。省略時500。20以下0として取り扱う。
+	plugin:視覚的に影響のあるプラグイン。
+	c_plugin:可視状態を切り替えるプラグイン。
+	c_flayer:可視状態を切り替える表レイヤ。htmlレイヤ、ムービーレイヤ用。
+	skip:スキップ中にtransアニメをスキップさせるかどうか。未指定時false。
+	
+	layer,c_flayer,plugin,c_pluginはカンマ区切りで複数指定可能。
+
+*type=color:画面を一色で覆って切り替え
+*type=colorfIn:画面を一色で覆い、裏画面をフェードイン
+*type=colorOut:表をフェードアウトしながら画面を一色で覆って切り替え
+*type=colorInOut:表から一色、一色から裏共にフェードさせる
+	color=uint:何色で覆うか。省略時0x000000(黒)
+
+*type=fadeIn:表がアニメ、htmlレイヤを消す場合
+*type=fadeOut:裏がアニメ、htmlを表示する場合
+	追加指定属性無し
+
+*type=zoomIn:裏を拡大縮小させつつ表示する
+*type=zoomOut:表を拡大縮小させつつ消す
+	scale=Number:拡大倍率。未指定時0.5
+	alpha=Number:透過度。未指定時0.5
+	(Inの場合は初期値、Outの場合は終了値を指定)
+	
+*type=sclrollIn:裏をスクロールさせてくる
+*type=scrollOut:表をスクロールさせて出す
+*type=scrollInOut:裏表ともスクロールさせる
+	course=String:スクロールさせる方向。必須。
+		TtoB:上から下へ(top to bottom)
+		BtoT:下から上へ
+		RtoL:右から左へ(right to left)
+		LtoR:左から右へ
+	h_layer=String:スクロール中不可視にするレイヤ。(scrollInOutのみ。たち絵のみ等変化用。カンマ区切りで複数指定可能)
+
+*type=tweenIn:裏をtweenさせてくる
+*type=tweenOut:表をtweenさせて出す
+	scale_x=Number:縦方向の倍率。省略時1.0
+	scale_y=Number:横方向の倍率。省略時1.0
+	alpha=Number:不透過度。省略時1.0
+	rotation=int:回転角度。省略時0
+	top=int:上からの距離。省略時0
+	left=int:左からの距離。省略時0
+	ease=String:変化の仕方。省略時"Linear.easeInOut"
+	(Inの場合は初期値、Outの場合は終了値を指定)
+
+
+※transition終了待ち
+[wtp]
+属性無し
+基本的に、[trans_plus]にはセットでつけてください。
+[trans_plus]に待ちまでを入れると、その間にしたい事が出来なくなるのでタグを分けました。
+
+===============================================
+
+layer指定についての補足
+
+[trans]では、layer指定無しですと全レイヤが対象になりましたが、
+[trans_plus]は自力で全て指定してください。
+全てのレイヤを毎回書くのが面倒でしたら、変数を使う方法もあります。
+[let name=all_lay text=bg,cha,mes,……]
+と準備しておいて、
+[trans_plus layer=&all_lay 〜]など。
+
+影響のあるレイヤに挟まれたレイヤはもれなく指定してください。
+その際、そのままでいいレイヤも裏を表に入れ替えますので、
+[trans_plus]の前にそのようなレイヤは裏を表と同一にしておいてください。
+二軍タグの[backlay]を利用するのも一つの手です。
+http://famibee.web.fc2.com/tag_dev/tag_2nd.htm#backlay
+
+===============================================
+
+
+瀬戸愛羅
+aira@wy5.org
+
+AIRNovelをさわろう!
+http://ansawaro.wy5.org/
